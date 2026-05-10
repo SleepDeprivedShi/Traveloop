@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useTrips, Trip } from "@/lib/useTrips";
+import Link from "next/link";
 
 export default function TripsPage() {
   const { user, loading: authLoading } = useAuth();
@@ -112,7 +113,7 @@ export default function TripsPage() {
   );
 }
 
-function TripCard({ trip, isEditing, tripForm, setTripForm, onEdit, onDelete, onSave, onCancel }: any) {
+function TripCard({ trip, isEditing, tripForm, setTripForm, onEdit, onDelete, onSave, onCancel, onView }: any) {
   const destinationCount = 3;
 
   return (
@@ -164,9 +165,9 @@ function TripCard({ trip, isEditing, tripForm, setTripForm, onEdit, onDelete, on
             </p>
           </div>
           <div className="flex gap-2">
-            <button className="px-3 py-1.5 bg-[#2E4057] text-white rounded-lg text-sm hover:bg-[#1a2a3d]">
+            <Link href={`/trips/${trip.id}`} className="px-3 py-1.5 bg-[#2E4057] text-white rounded-lg text-sm hover:bg-[#1a2a3d]">
               View
-            </button>
+            </Link>
             <button onClick={onEdit} className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-300">
               Edit
             </button>

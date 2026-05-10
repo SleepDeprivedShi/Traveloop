@@ -247,6 +247,20 @@ export default function CreateTripPage() {
                   >
                     View Trip
                   </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => router.push(`/packing-checklist/delhi`)}
+                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors text-sm"
+                    >
+                      📋 Packing Checklist
+                    </button>
+                    <button
+                      onClick={() => router.push(`/journal/delhi`)}
+                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors text-sm"
+                    >
+                      📓 Journal
+                    </button>
+                  </div>
                   <button
                     onClick={() => {
                       setSuccess(false);
