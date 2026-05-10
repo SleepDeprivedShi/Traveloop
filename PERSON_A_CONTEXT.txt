@@ -1,0 +1,223 @@
+TRAVELOOP - CONTEXT FOR FRONTEND DEVELOPER (PERSON A)
+========================================================
+
+PROJECT OVERVIEW
+----------------
+Traveloop is a personalized travel planning web application to be built for a hackathon.
+
+TIMEFRAME: 8 hours
+TEAM SIZE: 2 people
+TECH STACK: Next.js + Firebase (Auth + Firestore + Storage)
+
+Your role: PERSON A - Frontend & UI Development
+
+---
+
+YOUR RESPONSIBILITIES (Hours 0-4)
+---------------------------------
+
+1. Initialize Next.js project with Tailwind CSS
+   - Run: npx create-next-app@latest traveloop --typescript --tailwind --eslint
+   - Configure Tailwind with custom travel theme colors
+
+2. Create layout components
+   - Navbar.tsx - Navigation bar with user menu
+   - Sidebar.tsx - Side navigation for trip pages
+   - Layout wrapper - Consistent layout across pages
+
+3. Build Login/Signup pages
+   - /login/page.tsx - Email/password login with Firebase Auth
+   - /signup/page.tsx - Registration form
+   - Use AuthContext from Person B
+
+4. Build Dashboard (/)
+   - Welcome message
+   - Recent trips list (mock data initially)
+   - "Plan New Trip" button
+   - Popular destinations section
+   - Budget highlights summary
+
+5. Create Trip form (/trips/new)
+   - Trip name input
+   - Start & end date pickers
+   - Trip description textarea
+   - Cover photo upload (Firebase Storage)
+   - Save button → creates trip in Firestore
+
+6. My Trips list (/trips)
+   - Trip cards with: name, date range, destination count
+   - Edit/View/Delete actions per card
+   - Filter/sort options
+
+7. Itinerary Builder (/trips/[id]/builder)
+   - "Add Stop" button - modal to select city
+   - Drag-and-drop reordering of stops
+   - Assign arrival/departure dates per stop
+   - Add activities to each stop
+
+8. Itinerary View (/trips/[id])
+   - Day-wise layout with city headers
+   - Activity blocks with time and cost
+   - Toggle between calendar view and list view
+   - Read-only for shared links
+
+9. City Search (/search/cities)
+   - Search bar with autocomplete
+   - List of cities with: name, country, cost index, popularity
+   - "Add to Trip" button
+   - Filter by country/region
+
+10. Activity Search (/search/activities)
+    - Browse activities by city
+    - Filters: type, cost range, duration
+    - Activity cards with images, descriptions
+    - Add to itinerary button
+
+---
+
+HOURS 4-6: MERGE & INTEGRATION
+-------------------------------
+- Connect all UI components to Firestore data from Person B
+- Ensure proper loading states and error handling
+- Test complete user flow: login → create trip → add stops → add activities
+
+---
+
+HOURS 6-8: POLISH
+-----------------
+- Shared Itinerary page (/trips/[id]/share) - public read-only view
+- User Profile page (/profile) - edit name, photo, preferences
+- Mobile responsive adjustments
+- Loading skeletons and transitions
+- Final testing
+
+---
+
+TECHNICAL REQUIREMENTS
+----------------------
+
+1. Use Next.js App Router (Next.js 14+)
+2. Tailwind CSS for styling - see color palette below
+3. Firebase Auth for login/signup
+4. Firestore for all data storage
+5. Use React Server Components where possible
+
+Color Palette (add to tailwind.config.ts):
+- Primary: #FF6B35 (Orange - travel/energy)
+- Secondary: #2E4057 (Navy blue)
+- Accent: #1D976C (Green - nature/money)
+- Background: #F7F9FC
+- Card BG: #FFFFFF
+
+Key Components to Build:
+- TripCard.tsx - displays trip summary
+- StopCard.tsx - city stop in itinerary
+- ActivityCard.tsx - activity with details
+- ItineraryDay.tsx - single day in timeline
+- BudgetChart.tsx - pie/bar chart for costs
+- CitySearchResult.tsx - city with add button
+- ActivitySearchResult.tsx - activity card
+
+---
+
+CRITICAL PATHS
+--------------
+
+1. Auth Flow:
+   - Login → AuthContext provides user → redirect to Dashboard
+
+2. Create Trip Flow:
+   - Dashboard → "Plan New Trip" → Fill form → Save → Redirect to My Trips
+
+3. Itinerary Builder Flow:
+   - My Trips → Click trip → Builder → Add Stop → Select City → Add Dates → Add Activities
+
+4. Share Flow:
+   - Trip → Click "Share" → Generate public URL → Anyone can view (read-only)
+
+---
+
+API STRUCTURE (from Person B)
+------------------------------
+
+You'll receive these hooks/functions from Person B:
+- useAuth() - current user, login, logout, register
+- useTrips() - getTrips(), createTrip(), updateTrip(), deleteTrip()
+- useStops(tripId) - getStops(), addStop(), updateStop(), deleteStop()
+- useActivities(tripId) - getActivities(), addActivity(), removeActivity()
+- useBudget(tripId) - calculate total costs, get breakdown
+- usePacking(tripId) - getItems(), addItem(), togglePacked(), deleteItem()
+- useNotes(tripId) - getNotes(), addNote(), updateNote(), deleteNote()
+
+---
+
+FILE STRUCTURE
+--------------
+
+src/
+├── app/
+│   ├── page.tsx                 → Dashboard
+│   ├── login/page.tsx
+│   ├── signup/page.tsx
+│   ├── dashboard/page.tsx
+│   ├── trips/
+│   │   ├── new/page.tsx         → Create Trip
+│   │   ├── page.tsx             → My Trips
+│   │   └── [id]/
+│   │       ├── page.tsx         → Itinerary View
+│   │       ├── builder/page.tsx → Itinerary Builder
+│   │       ├── budget/page.tsx
+│   │       ├── packing/page.tsx
+│   │       ├── notes/page.tsx
+│   │       └── share/page.tsx   → Public view
+│   ├── search/
+│   │   ├── cities/page.tsx
+│   │   └── activities/page.tsx
+│   ├── profile/page.tsx
+│   └── layout.tsx
+├── components/
+│   ├── Navbar.tsx
+│   ├── Sidebar.tsx
+│   ├── TripCard.tsx
+│   ├── StopCard.tsx
+│   ├── ActivityCard.tsx
+│   ├── ItineraryDay.tsx
+│   ├── BudgetChart.tsx
+│   └── ui/ (buttons, inputs, cards)
+├── lib/
+│   └── firebase.ts (from Person B)
+├── hooks/ (from Person B)
+└── context/
+    └── AuthContext.tsx (from Person B)
+
+---
+
+MOCKUP REFERENCE
+----------------
+View the design mockup at: https://link.excalidraw.com/l/65VNwvy7c4X/22o30WE3bE4
+
+---
+
+IMPORTANT NOTES
+---------------
+1. Start with project setup immediately - no time to waste
+2. Use mock data for UI before connecting to Firebase
+3. Keep components modular and reusable
+4. Use TypeScript throughout
+5. Mobile-first responsive design
+6. Focus on the core flow first: Auth → Dashboard → Create Trip → Itinerary Builder → View
+
+FINAL DELIVERABLE
+-----------------
+A working travel planning app with:
+- User authentication
+- Create and manage multi-city trips
+- Add cities and activities to itinerary
+- View itinerary in calendar/list format
+- Basic budget tracking
+- Packing checklist
+- Trip notes
+- Share itinerary publicly
+- User profile
+
+Good luck! Build fast, iterate quickly.
