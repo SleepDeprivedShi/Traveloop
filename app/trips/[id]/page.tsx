@@ -125,9 +125,9 @@ export default function TripDetailPage({ params }: { params: Promise<{ id: strin
                 )}
               </div>
               <div className="flex gap-2">
-                <button className="px-4 py-2 bg-[#FF6B35] text-white rounded-lg font-medium hover:bg-[#e55a2b]">
+                <Link href="/trips" className="px-4 py-2 bg-[#FF6B35] text-white rounded-lg font-medium hover:bg-[#e55a2b]">
                   Edit Trip
-                </button>
+                </Link>
               </div>
             </div>
 

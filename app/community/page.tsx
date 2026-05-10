@@ -4,14 +4,17 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { usePosts, Post } from "@/lib/usePosts";
+import { useUsers, UserProfile } from "@/lib/useUsers";
 
 export default function CommunityPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const { posts, loading: postsLoading, createPost } = usePosts();
+  const { users, loading: usersLoading } = useUsers();
   const [showModal, setShowModal] = useState(false);
   const [newPostContent, setNewPostContent] = useState("");
   const [posting, setPosting] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -38,7 +41,7 @@ export default function CommunityPage() {
     }
   };
 
-  if (authLoading || postsLoading) {
+  if (authLoading || postsLoading || usersLoading) {
     return (
       <div className="min-h-screen bg-[#F7F9FC] flex items-center justify-center">
         <div className="text-gray-600">Loading...</div>
@@ -75,13 +78,28 @@ export default function CommunityPage() {
     return date.toLocaleDateString();
   };
 
+  const filteredPosts = posts.filter(post => 
+    post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.userName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const matchedUsers = searchTerm.trim() 
+    ? users.filter(u => 
+        (u.firstName?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (u.lastName?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (u.email?.toLowerCase().includes(searchTerm.toLowerCase()))
+      ).slice(0, 5)
+    : [];
+
   return (
     <div className="min-h-screen bg-[#F7F9FC]">
       <div className="max-w-4xl mx-auto px-6 py-6">
         <div className="flex gap-3 mb-6">
           <input
             type="text"
-            placeholder="Search bar ......"
+            placeholder="Search posts or people..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B35] bg-white text-black"
           />
           <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700">
@@ -99,13 +117,33 @@ export default function CommunityPage() {
           Community tab
         </h2>
 
+        {matchedUsers.length > 0 && (
+          <div className="mb-6 p-4 bg-white rounded-xl border border-gray-200">
+            <h3 className="text-sm font-medium text-gray-500 mb-3">People</h3>
+            <div className="flex flex-wrap gap-2">
+              {matchedUsers.map(u => (
+                <div key={u.id} className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-full">
+                  <div className="w-8 h-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-sm font-medium">
+                    {u.firstName?.[0] || u.email?.[0]?.toUpperCase() || "?"}
+                  </div>
+                  <span className="text-sm text-gray-700">
+                    {u.firstName && u.lastName 
+                      ? `${u.firstName} ${u.lastName}` 
+                      : u.email?.split("@")[0] || "User"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="space-y-4">
-          {posts.length === 0 ? (
+          {filteredPosts.length === 0 ? (
             <div className="text-center py-10 text-gray-500">
               No posts yet. Be the first to share your travel experience!
             </div>
           ) : (
-            posts.map((post) => (
+            filteredPosts.map((post) => (
               <div key={post.id} className="flex gap-4">
                 <div className="w-12 h-12 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
                   <img

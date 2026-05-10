@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useTrips, Trip } from "@/lib/useTrips";
 import { useUserProfile } from "@/lib/useUserProfile";
@@ -18,14 +18,14 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   
   const [editingProfile, setEditingProfile] = useState({
-    firstName: profile?.firstName || "",
-    lastName: profile?.lastName || "",
-    phone: profile?.phone || "",
-    city: profile?.city || "",
-    country: profile?.country || "",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    city: "",
+    country: "",
   });
 
-  useState(() => {
+  useEffect(() => {
     if (profile) {
       setEditingProfile({
         firstName: profile.firstName || "",
@@ -35,7 +35,7 @@ export default function ProfilePage() {
         country: profile.country || "",
       });
     }
-  });
+  }, [profile]);
 
   if (authLoading || tripsLoading || profileLoading) {
     return (
@@ -71,6 +71,7 @@ export default function ProfilePage() {
         country: editingProfile.country,
       });
       setIsEditing(false);
+      window.location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -186,7 +187,16 @@ export default function ProfilePage() {
                   <div className="flex items-center gap-3 mb-3">
                     <h2 className="text-xl font-semibold text-[#2E4057]">{displayName}</h2>
                     <button
-                      onClick={() => setIsEditing(true)}
+                      onClick={() => {
+                        setEditingProfile({
+                          firstName: profile?.firstName || "",
+                          lastName: profile?.lastName || "",
+                          phone: profile?.phone || "",
+                          city: profile?.city || "",
+                          country: profile?.country || "",
+                        });
+                        setIsEditing(true);
+                      }}
                       className="text-sm text-[#FF6B35] hover:underline font-medium"
                     >
                       Edit

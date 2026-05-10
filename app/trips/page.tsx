@@ -91,11 +91,8 @@ export default function TripsPage() {
   return (
     <div className="min-h-screen bg-[#F7F9FC]">
       <div className="max-w-4xl mx-auto p-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6">
           <h1 className="text-2xl font-bold text-black">My Trips</h1>
-          <button className="px-4 py-2 bg-[#FF6B35] text-white rounded-lg hover:bg-[#e55a2b] font-medium">
-            + Create New Trip
-          </button>
         </div>
 
         {trips.length > 0 ? (
