@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBqz_A2gZKwCQMw80UIQkqF38t8vFbFuyA",
-  authDomain: "traveloop-f1f86.firebaseapp.com",
-  projectId: "traveloop-f1f86",
-  storageBucket: "traveloop-f1f86.firebasestorage.app",
-  messagingSenderId: "599180296354",
-  appId: "1:599180296354:web:f0a41d5cfc500c501857fb"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
